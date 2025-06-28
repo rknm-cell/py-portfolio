@@ -1,0 +1,73 @@
+---
+title: 'Mergesort'
+publishedAt: '2025-06-28'
+summary: 'A deeper understanding of the mergesort algorithm'
+---
+
+A common issue that comes up when working with data, is how to sort it. Well, how do you sort it? Do you just jumble it up, hope for the best? I sure hope not. You use a sorting algorithm. A set of instructions that used to organize data. 
+
+One of these algorithms is called Merge Sort. It is a recursive sorting algorithm that takes the data and splits it in half over and over and over again and to put it back together in order, but how does that work?
+
+Let’s say you have an a array of numbers. You take that array and split it in half, evenly. Then take the left half and split that one in half. You continue splitting the left half of these arrays until you are have two arrays that only have a single item each. Now, those two arrays are sorted, because one number by itself is always in order. 
+
+You then take those two sorted arrays and you need merge them by ascending order. You compare the first index of each array to see which one is smaller, and you add that to a new sorted array. When one of the arrays is empty, it’s safe to assume that the leftover array is sorted, so it can be just added to the end of the new sorted array. 
+
+You will then continue back up splitting up unsorted arrays until they down to arrays with just one number, and merge those in order. When you start to combine sorted arrays, you compare the first index of each array, the lower one gets removed and pushed into a new sorted array. You continue to check each index, sorting the left and right arrays into the new sorted array. If you run out of items in one array you can safely add the rest of the remaining array to the end, because it’s already sorted, until eventually you have a sorted array.
+
+Okay, hopefully you have a better understanding of it on a meta level, let’s take a look at the code and show you a coding example. 
+You start out with a the mergsort function. Which takes in an array of numbers.
+function MergeSort(arr: number[]): number[] {
+
+We then check if the array is 1 or less in length. In which case it’s already sorted, so we return that array.
+  if (arr.length <= 1) {
+    return arr;
+  }
+We find that halfway point of the array
+  const mid = Math.floor(arr.length / 2);
+We then split the array in half, the left side and the right side.
+  const left = arr.slice(0, mid);
+  const right = arr.slice(mid);
+
+Here’s the tricky part we then recursively call the MergeSort function to continue splitting the arrays until they are broken down.
+  const sortedLeft = MergeSort(left);
+  const sortedRight = MergeSort(right);
+
+We then call our merge function to merge the sorted arrays.
+  return Merge(sortedLeft, sortedRight);
+}
+
+We use a Merge helper function
+
+function Merge(left: number[], right: number[]): number[] {
+We declare an empty array to insert sorted numbers.
+  const mergedArr: number[] = [];
+We then declare variables for left and right indexes.
+  let l = 0;
+  let r = 0;
+While the left index is less than the length of the left array, and the right index is less than the length of the right array, we can compare the arrays.
+  while (l < left.length && r < right.length) {
+
+We check if the lowest index of the left array is lower than the right index, if so we added it to the new array. Then we increment the left index.
+    if (left[l] < right[r]) {
+      mergedArr.push(left[l]);
+      l++;
+If the left value is lower than the right value, we add the right value to the array.
+    } else (left[l] > right[r]) {
+      mergedArr.push(right[r]);
+      r++;
+    }
+  }
+If one of the arrays is now empty, we can safely add the left over array to the new array, as it is already sorted.
+
+  return mergedArr.concat(left.slice(l)).concat(right.slice(r));
+}
+
+How efficiently does Mergesort work? The notation is Big O(nlogn). The first n being the length of the array and log n being the operations of how often the array is split in half.
+
+Having spent time working on making a mergesort algorithm and really focusing on understanding it. I found myself gaining a deeper appreciation for sorting a algorithms and especially recursion. My big blocker on this algorithm was recursion and the function calling itself from within itself. To borrow a phrase from Christopher Moltisanti, “Mergesort! I liked it!”
+
+
+
+
+
+
